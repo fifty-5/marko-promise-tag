@@ -1,0 +1,59 @@
+$ {
+  const promise = new Promise((resolve, reject) => {
+    try {
+      const https = require("https");
+
+      https
+        .get("https://api.chucknorris.io/jokes/random", (res) => {
+          let data = "";
+
+          res.on("data", (chunk) => (data += chunk));
+          res.on("end", () => resolve(JSON.parse(data)));
+        })
+        .on("error", (err) => {
+          reject(err.message);
+        });
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+style {
+  figcaption {
+    width: 100%;
+    background-color: var(--dark-color);
+    color: var(--font-color);
+    padding: 25px;
+    display: inline-block;
+    margin: 15px 0;
+    border-radius: 5px;
+    position: relative;
+  }
+}
+
+<app-skeleton>
+  <@head>
+    <title>Marko y Fastify</title>
+    <meta name="description" content="iniciando con Marko js.">
+  </@head>
+  <@body>
+    <div>
+      <await(promise) client-reorder>
+        <@placeholder>
+          <label>Cargando...<progress/></label>
+        </@placeholder>
+
+        <@then|person|>
+          <figcaption>
+            <p>${person.value}</p>
+          </figcaption>
+        </@then>
+
+        <@catch|err|>
+          ${err.name} error: ${err.message}
+        </@catch>
+      </await>
+    </div>
+  </@body>
+</app-skeleton>
