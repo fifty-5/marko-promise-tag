@@ -4,13 +4,14 @@ Marko JS: Tags promise
 ## Getting Started
 
 ```bash
-npm install
-npm run dev
+docker-compose up --build
 ```
 
 ## Production Build
-```bash
-npm run build
-npm start
+
+Cambia el target en docker-compose.yml
+
+```yml
+target: prod
 ```
 
